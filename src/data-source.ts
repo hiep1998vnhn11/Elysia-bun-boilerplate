@@ -1,4 +1,7 @@
 import { DataSource } from 'typeorm'
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies'
+
+import { User } from './entities/user.entity'
 
 export const AppDataSource = new DataSource({
   type: 'mariadb',
@@ -6,10 +9,11 @@ export const AppDataSource = new DataSource({
   port: 3306,
   username: Bun.env.DB_USERNAME,
   password: Bun.env.DB_PASSWORD,
-  database: 'elysia',
-  synchronize: true,
+  database: Bun.env.DB_DATABASE,
+  synchronize: false,
   logging: true,
-  entities: [],
+  entities: [User],
   subscribers: [],
   migrations: [],
+  namingStrategy: new SnakeNamingStrategy(),
 })
