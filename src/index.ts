@@ -4,11 +4,14 @@ import { Elysia, Context, UnwrapSchema } from 'elysia'
 import { swagger } from '@elysiajs/swagger'
 import { staticPlugin } from '@elysiajs/static'
 import { jwt } from '@elysiajs/jwt'
+import { cors } from '@elysiajs/cors'
+
 import { AppDataSource } from './data-source'
 import setup from './setup'
 import { AuthModule } from './modules/auth/index.module'
 
 const app = new Elysia()
+  .use(cors())
   .use(
     swagger({
       documentation: {
@@ -22,7 +25,7 @@ const app = new Elysia()
   .use(
     jwt({
       name: 'jwt',
-      secret: Bun.env.JWT_SECRET,
+      secret: Bun.env.JWT_SECRET ?? 'asasd',
       exp: '2h',
     })
   )
