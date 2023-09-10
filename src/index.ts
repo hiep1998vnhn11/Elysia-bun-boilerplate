@@ -25,7 +25,7 @@ const app = new Elysia()
   .use(
     jwt({
       name: 'jwt',
-      secret: Bun.env.JWT_SECRET ?? 'asasd',
+      secret: Bun.env.JWT_SECRET,
       exp: '2h',
     })
   )
