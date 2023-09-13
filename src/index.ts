@@ -9,8 +9,10 @@ import { cors } from '@elysiajs/cors'
 import { AppDataSource } from './data-source'
 import setup from './setup'
 import { AuthModule } from './modules/auth/index.module'
+import { User } from './entities/user.entity'
 
 const app = new Elysia()
+  .use(setup)
   .use(cors())
   .use(
     swagger({
@@ -26,7 +28,7 @@ const app = new Elysia()
     jwt({
       name: 'jwt',
       secret: Bun.env.JWT_SECRET,
-      exp: '2h',
+      exp: '7d',
     })
   )
   .use(
@@ -34,7 +36,6 @@ const app = new Elysia()
       prefix: '/',
     })
   )
-  .use(setup)
   .group('/api', (app) => {
     app.get('/', ({ jwt }) => {})
     new AuthModule(app)
@@ -47,6 +48,9 @@ export interface AppContext extends Context {
   jwt: {
     readonly sign: (morePayload: any) => Promise<string>
     readonly verify: (jwt?: string) => Promise<false | any>
+  }
+  request: Request & {
+    user: User
   }
 }
 
